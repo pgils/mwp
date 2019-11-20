@@ -41,7 +41,7 @@ auto MeanImage::generate(int height, int width) -> bool {
     totalFrames = this->capture->get(CAP_PROP_FRAME_COUNT);
     framesPerCol = totalFrames / width;
     colIndex = 0;
-    this->output = new Mat(height, width, CV_32FC3);
+    this->output = new Mat(height, width, CV_32FC3, Scalar(0));
 
     for(;;) {
         *this->capture >> frame;
