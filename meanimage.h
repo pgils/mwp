@@ -1,7 +1,8 @@
 #ifndef MEANIMAGE_H
 #define MEANIMAGE_H
 
-#include <opencv2/opencv.hpp>
+#include <opencv2/videoio.hpp>
+#include <opencv2/core/mat.hpp>
 #include <string>
 
 class MeanImage

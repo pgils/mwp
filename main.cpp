@@ -1,6 +1,7 @@
-#include <iostream>
-#include <opencv2/opencv.hpp>
 #include "meanimage.h"
+#include <iostream>
+#include <stdexcept>
+#include <unistd.h>
 
 using namespace std;
 using namespace cv;
