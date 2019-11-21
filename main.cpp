@@ -1,4 +1,4 @@
-#include "meanimage.h"
+#include "mwpimage.h"
 #include <iostream>
 #include <stdexcept>
 #include <unistd.h>
@@ -8,7 +8,7 @@ using namespace cv;
 
 auto printUsage(string path) -> void {
     size_t pos;
-    string name = "meanwallpaper";
+    string name = "mwp";
 
     // try to get the binary name from `path`
     pos = path.rfind('/');
@@ -79,7 +79,7 @@ auto main(int argc, char** argv) -> int
     }
 
 
-    MeanImage image(input);
+    MwpImage image(input);
     cout << "generating image" << endl;
     image.generate(height, width);
     cout << "write out file" << endl;

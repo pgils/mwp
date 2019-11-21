@@ -1,11 +1,11 @@
-#include "meanimage.h"
+#include "mwpimage.h"
 #include <opencv2/imgcodecs.hpp>
 #include <iostream>
 
 using namespace std;
 using namespace cv;
 
-MeanImage::MeanImage(const string& inputFile)
+MwpImage::MwpImage(const string& inputFile)
 {
     this->output = nullptr;
     this->capture = new VideoCapture;
@@ -19,13 +19,13 @@ MeanImage::MeanImage(const string& inputFile)
     this->capture->setExceptionMode(false);
 }
 
-MeanImage::~MeanImage() {
+MwpImage::~MwpImage() {
     this->capture->release();
     delete this->capture;
     delete this->output;
 }
 
-auto MeanImage::generate(int height, int width) -> bool {
+auto MwpImage::generate(int height, int width) -> bool {
     double totalFrames;
     double framesPerCol;
     double currentFrame;
@@ -45,27 +45,26 @@ auto MeanImage::generate(int height, int width) -> bool {
     this->output = new Mat(height, width, CV_32FC3, Scalar(0));
 
     for(;;) {
+        currentFrame = colIndex * framesPerCol;
+
+        this->capture->set(CAP_PROP_POS_FRAMES, currentFrame);
+
         *this->capture >> frame;
 
         if(frame.empty()) {
             break;
         }
-
-        currentFrame = this->capture->get(CAP_PROP_POS_FRAMES);
-        cout << "processing frame " << currentFrame << "/" << totalFrames << endl;
-        if(currentFrame > (colIndex * framesPerCol)) {
-            // reduce the frame down to a 1-pixel column
-            reduce(frame, column, 1, REDUCE_AVG);
-            // create a column with a single color (average)
-            meanColumn = Mat(height, 1, CV_32FC3, mean(column));
-            // copy the column to `output`
-            meanColumn.col(0).copyTo(this->output->col(colIndex++));
-        }
+        // reduce the frame down to a 1-pixel column
+        reduce(frame, column, 1, REDUCE_AVG);
+        // create a column with a single color (average)
+        meanColumn = Mat(height, 1, CV_32FC3, mean(column));
+        // copy the column to `output`
+        meanColumn.col(0).copyTo(this->output->col(colIndex++));
     }
     return true;
 }
 
-auto MeanImage::write(const std::string& filename) -> bool {
+auto MwpImage::write(const std::string& filename) -> bool {
     bool result;
 
     try {

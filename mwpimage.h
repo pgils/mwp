@@ -5,17 +5,17 @@
 #include <opencv2/core/mat.hpp>
 #include <string>
 
-class MeanImage
+class MwpImage
 {
 public:
-    MeanImage(const std::string& inputFile);
+    MwpImage(const std::string& inputFile);
     // delete copy constructor and assignment operator
-    MeanImage(const MeanImage&) = delete;
-    auto operator=(const MeanImage&) -> MeanImage& = delete;
+    MwpImage(const MwpImage&) = delete;
+    auto operator=(const MwpImage&) -> MwpImage& = delete;
     // delete move constructor and assignment operator
-    MeanImage(MeanImage&&) = delete;
-    auto operator=(MeanImage&&) -> MeanImage& = delete;
-    virtual ~MeanImage();
+    MwpImage(MwpImage&&) = delete;
+    auto operator=(MwpImage&&) -> MwpImage& = delete;
+    virtual ~MwpImage();
 
 private:
     cv::VideoCapture *capture;

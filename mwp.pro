@@ -5,9 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-        meanimage.cpp
+        mwpimage.cpp
 HEADERS += \
-    meanimage.h
+    mwpimage.h
 
 INCLUDEPATH += \
         /usr/include/opencv4
