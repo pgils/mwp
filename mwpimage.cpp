@@ -45,21 +45,25 @@ auto MwpImage::generate(int height, int width) -> bool {
     this->output = new Mat(height, width, CV_32FC3, Scalar(0));
 
     for(;;) {
-        currentFrame = colIndex * framesPerCol;
-
-        this->capture->set(CAP_PROP_POS_FRAMES, currentFrame);
-
-        *this->capture >> frame;
-
-        if(frame.empty()) {
+        if(!this->capture->grab())
             break;
+
+        currentFrame = this->capture->get(CAP_PROP_POS_FRAMES);
+
+        if(currentFrame >= (framesPerCol * colIndex)) {
+
+            this->capture->retrieve(frame);
+
+            // reduce the frame down to a 1-pixel column
+            reduce(frame, column, 1, REDUCE_AVG);
+            // create a column with a single color (average)
+            meanColumn = Mat(height, 1, CV_32FC3, mean(column));
+            // copy the column to `output`
+            meanColumn.col(0).copyTo(this->output->col(colIndex++));
+
+            if(colIndex >= width)
+                break;
         }
-        // reduce the frame down to a 1-pixel column
-        reduce(frame, column, 1, REDUCE_AVG);
-        // create a column with a single color (average)
-        meanColumn = Mat(height, 1, CV_32FC3, mean(column));
-        // copy the column to `output`
-        meanColumn.col(0).copyTo(this->output->col(colIndex++));
     }
     return true;
 }
