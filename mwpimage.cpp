@@ -40,7 +40,7 @@ auto MwpImage::generate(int height, int width) -> bool {
     }
 
     totalFrames = this->capture->get(CAP_PROP_FRAME_COUNT);
-    framesPerCol = totalFrames / width;
+    framesPerCol = totalFrames / (width - 1);
     colIndex = 0;
     this->output = new Mat(height, width, CV_32FC3, Scalar(0));
 
@@ -61,8 +61,6 @@ auto MwpImage::generate(int height, int width) -> bool {
             // copy the column to `output`
             meanColumn.col(0).copyTo(this->output->col(colIndex++));
 
-            if(colIndex >= width)
-                break;
         }
     }
     return true;
